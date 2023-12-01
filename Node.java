@@ -133,4 +133,37 @@ public class Node {
             this.children[i] = new Node();
         }
     }
+
+    /**
+     * Destroy the children of this node
+     * 
+     */
+    public void destroyChildren()
+    {
+        this.children = null;
+    }
+
+    /**
+     * Verify that the node is a leaf
+     * 
+     * @return true if this node is a leaf, false otherwise
+     */
+    public boolean isLeaf() {
+        return this.value != -1;
+    }
+
+    /**
+     * Verify that the node is a twig root
+     * 
+     * @return true if this node is a twig root, false otherwise
+     */
+    public boolean isTwigRoot() {
+        if (this.children != null) {
+            return this.getChild(0).isLeaf()
+                && this.getChild(1).isLeaf()
+                && this.getChild(2).isLeaf()
+                && this.getChild(3).isLeaf();
+        }
+        return false;
+    }
 }
