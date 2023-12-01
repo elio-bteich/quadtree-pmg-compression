@@ -77,7 +77,7 @@ private static boolean isGoodFormat(String magicNumber, int width, int height) {
                     boolean isGoodValue = true;
                     int i = 0;
                     int j = 0;
-                    int nbElements;
+                    int nbElements = 0;
                     int value;
 
                     while (scanner.hasNextInt() && isGoodValue && i < width && (nbElements < (width * height))) {
@@ -87,7 +87,7 @@ private static boolean isGoodFormat(String magicNumber, int width, int height) {
                             if (isGoodValue) {
                                 tQuadtree[i][j] = value;
                                 j++; 
-                                nbElements++
+                                nbElements++;
                             } else {
                                 System.out.println("Une valeur du fichier est supérieure à la luminosité maximale");
                             }
@@ -95,10 +95,12 @@ private static boolean isGoodFormat(String magicNumber, int width, int height) {
                         j = 0; // remet le compteur colone a 0 pour la prochaine ligne
                         i++;   
                     }
-                }
-                if(nbElements < (width * height) ){
+                   if(nbElements < (width * height) ){
                     System.out.println("valeur manquante dans le fichier!");
                 }
+                }
+                 
+                
                 
             }
 
