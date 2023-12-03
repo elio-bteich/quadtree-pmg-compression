@@ -31,19 +31,25 @@ public class Util{
 * @return true si le format est correct, sinon false.
 */
 private static boolean isGoodFormat(String magicNumber, int width, int height) {
-    // Vérifier si le numéro magique commence par 'P2'
-    boolean isMagicNumberValid = magicNumber.startsWith("P2");
+    // Variables
+    boolean isGoodFormat;
     
-    // Vérifier si la largeur et la hauteur sont des puissances de 2 et sont égales
-    boolean isWidthPowerOfTwo = estPuissanceDeDeux(width);
-    boolean isHeightPowerOfTwo = estPuissanceDeDeux(height);
-    boolean areWidthAndHeightEqual = (width == height);
-    
+   
     // Vérifier si toutes les conditions sont remplies
-    return isMagicNumberValid && isWidthPowerOfTwo && isHeightPowerOfTwo && areWidthAndHeightEqual;
+    if (magicNumber.startsWith("P2")){
+        isGoodFormat = true;
+        if(width == height && estPuissanceDeDeux(width) ){
+            isGoodFormat = true;
+        }else{
+            System.out.println("taille de l'image incorrecte!");
+            isGoodFormat = false;
+        }
+    }else{
+        isGoodFormat = false;
+        System.out.println("Format de fichier incorrecte!");
     }
-
-
+    return isGoodFormat;
+}
     /**
      * Lit le contenu d'un fichier et renvoie un tableau 2D d'entiers.
      *
@@ -66,28 +72,36 @@ private static boolean isGoodFormat(String magicNumber, int width, int height) {
                 maxLuminosity = scanner.nextInt();
 
                 if (isGoodFormat(magicNumber, width, height)) {
-                    // Initialize the array based on the number of lines
+                    // initialise le tableau 2D en fonction de la taille lu dans le fichier
                     tQuadtree = new int[width][height];
                     boolean isGoodValue = true;
                     int i = 0;
                     int j = 0;
+                    int nbElements = 0;
                     int value;
 
-                    while (scanner.hasNextInt() && isGoodValue && i < width) {
+                    while (scanner.hasNextInt() && isGoodValue && i < width && (nbElements < (width * height))) {
                         while (j < height && isGoodValue) {
                             value = scanner.nextInt();
                             isGoodValue = (value >= 0) && (value <= maxLuminosity);
                             if (isGoodValue) {
                                 tQuadtree[i][j] = value;
-                                j++; // Increment the column index
+                                j++; 
+                                nbElements++;
                             } else {
                                 System.out.println("Une valeur du fichier est supérieure à la luminosité maximale");
                             }
                         }
-                        j = 0; // Reset column index for the next row
-                        i++;   // Move to the next row
+                        j = 0; // remet le compteur colone a 0 pour la prochaine ligne
+                        i++;   
                     }
+                   if(nbElements < (width * height) ){
+                    System.out.println("valeur manquante dans le fichier!");
                 }
+                }
+                 
+                
+                
             }
 
             return tQuadtree;

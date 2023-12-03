@@ -6,24 +6,35 @@ public class QuadTreeTest {
 
     public static void main(String[] args) {
         testQuadTreeConstruction();
-        testLambdaCompressTree();
+       // testLambdaCompressTree();
+       // Replace "path/to/your/file.txt" with the actual file path you want to test
+        //String filePath = "test.txt";
+
+        // Test the readfile method
+        //testReadFile(filePath);
     }
 
     private static void testQuadTreeConstruction() {
         int[][] image = {
-            {0, 1, 4, 5},
-            {2, 3, 6, 7},
-            {8, 9, 12, 13},
-            {10, 11, 14, 15}
+            {1, 1, 1 ,1 ,4 ,4 ,5 ,4},
+            {1 ,1 ,2 ,2 ,5 ,5 ,5 ,5},
+            {3 ,3 ,3 ,3 ,2, 2 ,2 ,2},
+            {1,2 ,2 ,3 ,3 ,1 ,1 ,1},
+            {1,2 ,2 ,3 ,3 ,1 ,1 ,1},
+            {1,2 ,2 ,3 ,3 ,1 ,1 ,1},
+            {1,2 ,2 ,3 ,3 ,1 ,1 ,1},
+            {1,2 ,2 ,3 ,3 ,1 ,1 ,1}
         };
+        System.out.println(image.length);
 
         QuadTree quadTree = new QuadTree(image);
         Node root = quadTree.getRoot();
-        printQuadTree(root, 1);
+        printQuadTree(root, 2);
         assert (root != null);
         assert (quadTree.getHeight() == 2);
     }
 
+   
     private static void testLambdaCompressTree() {
         int[][] image = {
             {0, 1, 4, 5},

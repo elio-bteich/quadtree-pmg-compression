@@ -65,14 +65,15 @@ public class QuadTree {
 
         else {
             node.createChildren();
-            constructQuadtree(node.getChild(0), arr, startLine, startCol, (endLine - startLine) / 2,
-                    (endCol - startCol) / 2);
-            constructQuadtree(node.getChild(1), arr, startLine, (endCol - startCol) / 2 + 1, (endLine - startLine) / 2,
+            constructQuadtree(node.getChild(0), arr, startLine, startCol, startLine + (endLine - startLine) / 2,
+            startCol + (endCol - startCol) / 2);
+            constructQuadtree(node.getChild(1), arr, startLine, startCol + (endCol - startCol) / 2 + 1, startLine + (endLine - startLine) / 2,
                     endCol);
-            constructQuadtree(node.getChild(2), arr, (endLine - startLine) / 2 + 1, (endCol - startCol) / 2 + 1,
+            constructQuadtree(node.getChild(2), arr, startLine + (endLine - startLine) / 2 + 1, startCol + (endCol - startCol) / 2 + 1,
                     endLine, endCol);
-            constructQuadtree(node.getChild(3), arr, (endLine - startLine) / 2 + 1, startCol, endLine,
-                    (endCol - startCol) / 2);
+            constructQuadtree(node.getChild(3), arr, startLine + (endLine - startLine) / 2 + 1, startCol, endLine,
+                    startCol + (endCol - startCol) / 2);
+
         }
     }
 
