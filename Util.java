@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 
@@ -64,7 +66,9 @@ private static boolean isGoodFormat(String magicNumber, int width, int height) {
             int height;
             int maxLuminosity;
             int[][] tQuadtree = null;
-            String magicNumber = scanner.next() ;
+            String magicNumber = scanner.nextLine() ;
+            String Comment =  scanner.nextLine();//Lecture du commentaire 
+           
 
             if (scanner.hasNextInt()) {
                 width = scanner.nextInt();
@@ -95,11 +99,10 @@ private static boolean isGoodFormat(String magicNumber, int width, int height) {
                         j = 0; // remet le compteur colone a 0 pour la prochaine ligne
                         i++;   
                     }
-                   if(nbElements < (width * height) ){
-                    System.out.println("valeur manquante dans le fichier!");
+                    if(nbElements < (width*height)){
+                        System.out.println("valeur manquante dans votre fichier!");
+                    }
                 }
-                }
-                 
                 
                 
             }
@@ -110,5 +113,42 @@ private static boolean isGoodFormat(String magicNumber, int width, int height) {
             return null;
         }
     }
+
+
+    public static void SaveImage(QuadTree image){
+        String file = "monFichier.txt";
+        int[][] grilleTemp = new int[image.getHeight()][image.getHeight()];
+
+
+
+        createGrilleTemp(image.getRoot(),grilleTemp, 0, 0, image.getHeight(), image.getHeight());
+
+        try ( FileWriter writer = new FileWriter(new File(file))){
+            
+
+        }catch (IOException e) {
+            System.err.println("Erreur lors de l'écriture dans le fichier : " + e.getMessage());
+        }
+    }
+
+
+    public static void createGrilleTemp(Node root, int[][] grille, int startLine, int startCol, int endLine, int endCol){
+        
+        if ((endLine - startLine) == 1 && (endCol - startCol) == 1 ) {
+            grille[startLine][startCol] = root.getChildValue(0);
+            grille[startLine][endCol] = root.getChildValue(1);
+            grille[endLine][endCol] = root.getChildValue(2);
+            grille[endLine][startCol] = root.getChildValue(3);
+        }else{
+            createGrilleTemp(root.getChild(0), grille, startLine, startCol, startLine + (endLine - startLine) / 2,
+            startCol + (endCol - startCol) / 2);
+            createGrilleTemp(root.getChild(1), grille,startLine, startCol + (endCol - startCol) / 2 + 1, startLine + (endLine - startLine) / 2,
+            endCol);
+            createGrilleTemp(root.getChild(2), grille, startLine + (endLine - startLine) / 2 + 1, startCol + (endCol - startCol) / 2 + 1,
+            endLine, endCol);
+            createGrilleTemp(root.getChild(3), grille,startLine + (endLine - startLine) / 2 + 1, startCol, endLine,
+            startCol + (endCol - startCol) / 2);
+
+        }
+    }
 }
-    
