@@ -13,25 +13,28 @@ public class MainMenu {
 
     public void start(){
         displayImages();
-        compressedQuadtree = new QuadTree(Util.readFile(images.get(readAnswer())));
+        compressedQuadtree = new QuadTree(Util.loadImage(images.get(readAnswer())));
+        System.out.println("construction de l'arbre ok ");
         compMenu = new CompressionMenu(compressedQuadtree);
         compMenu.start();
     }
 
 
     public int readAnswer(){
-        Scanner scanner = new Scanner(System.in);
-        int answer;
+        try (Scanner scanner = new Scanner(System.in)) {
+            int answer;
 
-        answer = scanner.nextInt();
-        while(answer < 1 && answer > images.size()){
-            System.out.println("Entrez le numéro se trouvant devant l'image : ");
             answer = scanner.nextInt();
+            while(answer < 1 || answer > images.size()){
+                System.out.println("Entrez le numéro se trouvant devant l'image : ");
+                answer = scanner.nextInt();
+            }
+            
+            return answer-1;
         }
-        return answer;
     }
     public void displayImages(){
-        for (int i = 0 ;i <= images.size();i++){
+        for (int i = 0 ;i < images.size();i++){
             System.out.println(i+1 + ". " + images.get(i));
         }
         System.out.println("Entrez le numéro de l'image à charger : ");

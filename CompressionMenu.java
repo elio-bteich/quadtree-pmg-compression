@@ -15,44 +15,54 @@ public class CompressionMenu {
     }
 
     public void displayCompMenu(){
+        System.out.println("Quel compression souhaitez vous appliquez?");
         System.out.println("1.Compression lambda");
         System.out.println("2.Compression RHO");
         System.out.println("Entrez le numéro de la compression que vous souhaitez appliquez: ");
     }
 
     public void applyCompression(){
-       
         if(chooseCompression()){
             newImage.lambdaCompressTree(newImage);
         }else{
-            newImage.rhoCompressTree(readRho());
+            //newImage.rhoCompressTree(readRho());
         }
-        Util.SaveImage(newImage);
     }
 
-    public boolean chooseCompression(){
-        Scanner scanner = new Scanner(System.in);
-        String answer;
+    public boolean chooseCompression() {
+       
+        try (Scanner scanner = new Scanner(System.in)) {
+            int answer = 0;
+            if(scanner.hasNextInt()){
+                answer = scanner.nextInt();
+            }
+            
+    
+            while (answer != 1  && answer != 2) {
+                scanner.next();
+                if(scanner.hasNextInt()){
+                System.out.println("Numéro de compression invalide. Entrez 1 ou 2 : ");
+                answer = scanner.nextInt();
+            }
 
-        answer = scanner.nextLine();
-        while(answer != "1" && answer != "2"){
-            System.out.println("Entrez le numéro de la compression que vous souhaitez appliquez: : ");
-            answer = scanner.nextLine();
+                
+            }
+            return answer == 1;
         }
-        return answer == "1";
     }
-
 
     public int readRho(){
-        Scanner scanner = new Scanner(System.in);
-        int rho = scanner.nextInt();
+        try (Scanner scanner = new Scanner(System.in)) {
+            int rho = scanner.nextInt();
 
-         System.out.println("Entrez la valeur fu facteur ρ (compris entre 1 et 100 inclus): ");
-        while(rho < 0 && rho > 100){
-            System.out.println(" ρ doit etre compris entre 1 et 100: ");
-            rho = scanner.nextInt();
+             System.out.println("Entrez la valeur fu facteur ρ (compris entre 1 et 100 inclus): ");
+            while(rho < 0 && rho > 100){
+                System.out.println(" ρ doit etre compris entre 1 et 100: ");
+                rho = scanner.nextInt();
+            }
+            scanner.close();
+            return rho;
         }
-        return rho;
     }
     
 }

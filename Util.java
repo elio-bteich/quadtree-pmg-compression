@@ -24,7 +24,7 @@ public class Util{
         return (nombre & (nombre - 1)) == 0;
     }
 
-  /**
+/**
 * Vérifie si le format d'image est correct.
 *
 * @param magicNumber Le numéro magique du format d'image.
@@ -59,7 +59,7 @@ private static boolean isGoodFormat(String magicNumber, int width, int height) {
      * @return Un tableau 2D d'entiers, ou null en cas d'erreur de lecture du fichier.
      * @throws FileNotFoundException
      */
-    public static int[][] readFile(String path) {
+    public static int[][] loadImage(String path) {
         try (Scanner scanner = new Scanner(new File(path))) {
             // variables
             int width;
@@ -114,25 +114,40 @@ private static boolean isGoodFormat(String magicNumber, int width, int height) {
         }
     }
 
-
-    public static void SaveImage(QuadTree image){
-        String file = "monFichier.txt";
-        int[][] grilleTemp = new int[image.getHeight()][image.getHeight()];
-
-
-
-        createGrilleTemp(image.getRoot(),grilleTemp, 0, 0, image.getHeight(), image.getHeight());
+      
+    public static void SaveImage(QuadTree image ,String file ){
+       
+        String mot;
+        int[][] grilleTemp = new int[image.getHeight()][image.getHeight()];//initialisation du tableau a la taille stocké dans le quadtree
+        createGrilleTemp(image.getRoot(),grilleTemp, 0, 0, image.getHeight(), image.getHeight());//remplissage du tableau avec les valeur du quadtree
 
         try ( FileWriter writer = new FileWriter(new File(file))){
-            
+            writer.write("P2");
+            writer.write(System.lineSeparator()); // Ajouter un saut de ligne
+            writer.write("# c'est un commentaire juste pour faire genre");
+            writer.write(System.lineSeparator()); 
+            mot = String.valueOf(image.getHeight());
+            writer.write(mot + " "+ mot);
+            writer.write(System.lineSeparator()); 
+            mot = String.valueOf(255);
+            writer.write(mot);
+            writer.write(System.lineSeparator()); 
+            for (int i = 0; i < grilleTemp.length; i++) {
+                for (int j = 0; j < grilleTemp[i].length; j++) {
+                    mot = String.valueOf(grilleTemp[i][j]); 
+                    writer.write(mot+ " ");
+                }
 
+                writer.write(System.lineSeparator()); 
+               
+            }
         }catch (IOException e) {
             System.err.println("Erreur lors de l'écriture dans le fichier : " + e.getMessage());
         }
     }
 
 
-    public static void createGrilleTemp(Node root, int[][] grille, int startLine, int startCol, int endLine, int endCol){
+    private static void createGrilleTemp(Node root, int[][] grille, int startLine, int startCol, int endLine, int endCol){
         
         if ((endLine - startLine) == 1 && (endCol - startCol) == 1 ) {
             grille[startLine][startCol] = root.getChildValue(0);

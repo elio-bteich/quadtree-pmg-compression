@@ -7,15 +7,13 @@ public class DefaultMenu {
 
     public DefaultMenu(String image,int rho){
         this.rho = rho;
-        this.newImage = new QuadTree(Util.readFile(image));
+        this.newImage = new QuadTree(Util.loadImage(image));
     }
 
 
     public void start(){
         newImage.lambdaCompressTree(newImage);
-        Util.SaveImage(newImage);
-        newImage.rhoCompressTree();
-        Util.SaveImage(newImage);
+       // newImage.rhoCompressTree(rho);
     }
 
 }
