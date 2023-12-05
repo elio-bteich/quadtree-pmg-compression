@@ -2,7 +2,7 @@
  * Class that represents a Node of a QuadTree
  * 
  */
-public class Node {
+public class QuadTreeNode {
 
     /**
      * The value attribute of the Node.
@@ -20,14 +20,14 @@ public class Node {
      * Could be null if this Node is a leaf
      * 
      */
-    private Node[] children;
+    private QuadTreeNode[] children;
 
 
     /**
      * The constructor of this node 
      *
      */
-    public Node()
+    public QuadTreeNode()
     {
         this.value = -1;
         this.children = null;
@@ -39,7 +39,7 @@ public class Node {
      * @param value the value of the node
      * 
      */
-    public Node(int value)
+    public QuadTreeNode(int value)
     {
         this.value = value;
         this.children = null;
@@ -75,7 +75,7 @@ public class Node {
      * @return the nth child if this node has children, null if it doesn't have children or the index is invalid
      * 
      */
-    public Node getChild(int i)
+    public QuadTreeNode getChild(int i)
     {
         if (this.children != null && i < 4 && i >= 0) 
         {
@@ -126,11 +126,24 @@ public class Node {
      */
     public void createChildren() 
     {
-        this.children = new Node[4];
+        this.children = new QuadTreeNode[4];
 
         for (int i = 0; i < 4; i++) 
         {
-            this.children[i] = new Node();
+            this.children[i] = new QuadTreeNode();
+        }
+    }
+
+    /**
+     * Print the values of the children of this node
+     */
+    public void printChildren() {
+        if (this.children != null) {
+            for (int i = 0; i < 4; i++) {
+                System.out.println("Child " + i + ": " + this.children[i].getValue());
+            }
+        } else {
+            System.out.println("No children for this node.");
         }
     }
 
