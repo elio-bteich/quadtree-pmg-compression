@@ -21,17 +21,19 @@ public class MainMenu {
 
 
     public int readAnswer(){
-        try (Scanner scanner = new Scanner(System.in)) {
+         Scanner scanner = new Scanner(System.in);
             int answer;
 
             answer = scanner.nextInt();
+            scanner.nextLine();
             while(answer < 1 || answer > images.size()){
                 System.out.println("Entrez le numéro se trouvant devant l'image : ");
                 answer = scanner.nextInt();
+                scanner.nextLine();
             }
             
             return answer-1;
-        }
+        
     }
     public void displayImages(){
         for (int i = 0 ;i < images.size();i++){

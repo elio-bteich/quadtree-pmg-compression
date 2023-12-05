@@ -12,6 +12,7 @@ public class DefaultMenu {
 
 
     public void start(){
+        System.out.println("debut des compressions: ");
         newImage.lambdaCompressTree(newImage);
        // newImage.rhoCompressTree(rho);
     }

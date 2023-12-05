@@ -23,46 +23,44 @@ public class CompressionMenu {
 
     public void applyCompression(){
         if(chooseCompression()){
+            System.out.println("debut de la compression lambda: ");
             newImage.lambdaCompressTree(newImage);
         }else{
+            System.out.println("debut de la compression rho: ");
+            int rho = readRho();
             //newImage.rhoCompressTree(readRho());
         }
     }
 
     public boolean chooseCompression() {
        
-        try (Scanner scanner = new Scanner(System.in)) {
-            int answer = 0;
-            if(scanner.hasNextInt()){
-                answer = scanner.nextInt();
-            }
+        Scanner scanner = new Scanner(System.in) ;
+            int answer = scanner.nextInt();
             
-    
             while (answer != 1  && answer != 2) {
-                scanner.next();
-                if(scanner.hasNextInt()){
+                
                 System.out.println("Numéro de compression invalide. Entrez 1 ou 2 : ");
                 answer = scanner.nextInt();
-            }
-
-                
+                scanner.nextLine();
             }
             return answer == 1;
-        }
+        
     }
 
     public int readRho(){
-        try (Scanner scanner = new Scanner(System.in)) {
-            int rho = scanner.nextInt();
+        System.out.println("Entrez la valeur du facteur ρ (compris entre 1 et 100 inclus): ");
 
-             System.out.println("Entrez la valeur fu facteur ρ (compris entre 1 et 100 inclus): ");
-            while(rho < 0 && rho > 100){
+        Scanner scanner = new Scanner(System.in);
+            int rho = scanner.nextInt();
+            scanner.nextLine();
+
+            while(rho < 1 || rho > 100){
                 System.out.println(" ρ doit etre compris entre 1 et 100: ");
                 rho = scanner.nextInt();
+                scanner.nextLine();
             }
             scanner.close();
             return rho;
-        }
     }
     
 }
