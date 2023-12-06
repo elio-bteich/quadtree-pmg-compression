@@ -13,8 +13,7 @@ public class MainMenu {
 
     public void start(){
         displayImages();
-        compressedQuadtree = new QuadTree(Util.loadImage(images.get(readAnswer())));
-        System.out.println("construction de l'arbre ok ");
+        compressedQuadtree = new QuadTree(Util.loadImage(images.get(readAnswer())).getTableau());
         compMenu = new CompressionMenu(compressedQuadtree);
         compMenu.start();
     }
@@ -27,7 +26,7 @@ public class MainMenu {
             answer = scanner.nextInt();
             scanner.nextLine();
             while(answer < 1 || answer > images.size()){
-                System.out.println("Entrez le numéro se trouvant devant l'image : ");
+                System.out.println("ERROR: INVALID INPUT! Enter The number before the file you want to compress: ");
                 answer = scanner.nextInt();
                 scanner.nextLine();
             }
@@ -39,7 +38,7 @@ public class MainMenu {
         for (int i = 0 ;i < images.size();i++){
             System.out.println(i+1 + ". " + images.get(i));
         }
-        System.out.println("Entrez le numéro de l'image à charger : ");
+        System.out.println("Enter The number before the file you want to compress : ");
     }
     
 }

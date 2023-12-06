@@ -7,8 +7,14 @@ public class Compression {
         ArrayList <String> images = new ArrayList<>();
 
         if(args.length > 0){
-            DM = new DefaultMenu(args[0], Integer.valueOf(args[1]));
-            DM.start();
+            int rho = Integer.valueOf(args[1]);
+            if(rho < 1 || rho > 100){
+                DM = new DefaultMenu(args[0],rho );
+                DM.start();
+            }else{
+                System.out.println("ERROR: INVALID RHO VALUE!");
+            }
+           
         }else{
             images.add("train.pgm");
             images.add("flower_small.pgm");
