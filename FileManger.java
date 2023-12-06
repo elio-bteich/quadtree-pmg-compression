@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 
-public class Util{
+public class FileManger{
 
 
     /**
@@ -66,7 +66,7 @@ public static QuadtreePrefab loadImage(String path) {
         // Variables to store image properties
         int width;
         int height;
-        int maxLuminosity;
+        int maxLuminosity = -1 ;
         QuadtreePrefab newImage;
         int[][] tQuadtree = null; // 2D array to store image data
         boolean isGood = true; // Flag to indicate if the image loading is successful
@@ -117,9 +117,10 @@ public static QuadtreePrefab loadImage(String path) {
             } else {
                 isGood = false;
             }
+            
         }
         // Create a QuadtreePrefab object with the loaded data and return it
-        newImage = new QuadtreePrefab(tQuadtree, isGood);
+        newImage = new QuadtreePrefab(tQuadtree, isGood,maxLuminosity);
         return newImage;
     } catch (FileNotFoundException e) {
         // Handle the error if the file is not found

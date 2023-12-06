@@ -1,29 +1,81 @@
 public class QuadtreePrefab {
-    private int[][] tQuadtree;//le tableau a partir duquel sera construit le Quadtree
-    private boolean isGoodPrefabs;// vrai si toutes les valeur ont été correctement lue dans le fichier faux sinon 
+    private int[][] tQuadtree; // The array from which the Quadtree will be constructed
+    private boolean isGoodPrefabs; // True if all values were correctly read from the file, false otherwise
+    private int maxLuminosity; // Maximum luminosity value
 
-    public QuadtreePrefab(int[][] T, boolean isGood){
-        this.tQuadtree     = T;
+    /**
+     * Constructor for the QuadtreePrefab class.
+     *
+     * @param T      The array from which the Quadtree will be constructed.
+     * @param isGood True if all values were correctly read from the file, false otherwise.
+     * @param maxL   The maximum luminosity value.
+     */
+    public QuadtreePrefab(int[][] T, boolean isGood, int maxL) {
+        this.tQuadtree = T;
         this.isGoodPrefabs = isGood;
+        this.maxLuminosity = maxL;
     }
-    public QuadtreePrefab(){
-        this.tQuadtree     = null;
+
+    /**
+     * Default constructor for the QuadtreePrefab class.
+     */
+    public QuadtreePrefab() {
+        this.tQuadtree = null;
         this.isGoodPrefabs = true;
+        this.maxLuminosity = -1;
     }
 
-
-    public boolean getIsGoodPrefabs(){
+    /**
+     * Gets the validity of the Quadtree prefabs.
+     *
+     * @return True if all values were correctly read from the file, false otherwise.
+     */
+    public boolean getIsGoodPrefabs() {
         return this.isGoodPrefabs;
     }
 
-    public int[][] getTableau(){
+    /**
+     * Gets the array from which the Quadtree will be constructed.
+     *
+     * @return The array from which the Quadtree will be constructed.
+     */
+    public int[][] getTableau() {
         return this.tQuadtree;
     }
 
-    public void setTableau(int[][] T){
+    /**
+     * Sets the array from which the Quadtree will be constructed.
+     *
+     * @param T The new array to be assigned.
+     */
+    public void setTableau(int[][] T) {
         this.tQuadtree = T;
     }
-    public void setIsGoodPrefabs(boolean isGood){
+
+    /**
+     * Sets the validity of the Quadtree prefabs.
+     *
+     * @param isGood True if all values were correctly read from the file, false otherwise.
+     */
+    public void setIsGoodPrefabs(boolean isGood) {
         this.isGoodPrefabs = isGood;
+    }
+
+    /**
+     * Gets the maximum luminosity value.
+     *
+     * @return The maximum luminosity value.
+     */
+    public int getMaxLuminosity() {
+        return this.maxLuminosity;
+    }
+
+    /**
+     * Sets the maximum luminosity value.
+     *
+     * @param maxL The new maximum luminosity value to be assigned.
+     */
+    public void setMaxLuminosity(int maxL) {
+        this.maxLuminosity = maxL;
     }
 }
