@@ -119,7 +119,7 @@ private static boolean isGoodFormat(String magicNumber, int width, int height) {
        
         String mot;
         int[][] grilleTemp = new int[image.getHeight()][image.getHeight()];//initialisation du tableau a la taille stocké dans le quadtree
-        createGrilleTemp(image.getRoot(),grilleTemp, 0, 0, image.getHeight(), image.getHeight());//remplissage du tableau avec les valeur du quadtree
+        //createGrilleTemp(image.getRoot(),grilleTemp, 0, 0, image.getHeight(), image.getHeight());//remplissage du tableau avec les valeur du quadtree
 
         try ( FileWriter writer = new FileWriter(new File(file))){
             writer.write("P2");
@@ -143,27 +143,6 @@ private static boolean isGoodFormat(String magicNumber, int width, int height) {
             }
         }catch (IOException e) {
             System.err.println("Erreur lors de l'écriture dans le fichier : " + e.getMessage());
-        }
-    }
-
-
-    private static void createGrilleTemp(Node root, int[][] grille, int startLine, int startCol, int endLine, int endCol){
-        
-        if ((endLine - startLine) == 1 && (endCol - startCol) == 1 ) {
-            grille[startLine][startCol] = root.getChildValue(0);
-            grille[startLine][endCol] = root.getChildValue(1);
-            grille[endLine][endCol] = root.getChildValue(2);
-            grille[endLine][startCol] = root.getChildValue(3);
-        }else{
-            createGrilleTemp(root.getChild(0), grille, startLine, startCol, startLine + (endLine - startLine) / 2,
-            startCol + (endCol - startCol) / 2);
-            createGrilleTemp(root.getChild(1), grille,startLine, startCol + (endCol - startCol) / 2 + 1, startLine + (endLine - startLine) / 2,
-            endCol);
-            createGrilleTemp(root.getChild(2), grille, startLine + (endLine - startLine) / 2 + 1, startCol + (endCol - startCol) / 2 + 1,
-            endLine, endCol);
-            createGrilleTemp(root.getChild(3), grille,startLine + (endLine - startLine) / 2 + 1, startCol, endLine,
-            startCol + (endCol - startCol) / 2);
-
         }
     }
 }

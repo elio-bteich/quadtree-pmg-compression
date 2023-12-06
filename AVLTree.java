@@ -95,10 +95,16 @@ public class AVLTree {
         }
     }
 
-    private AVLNode findMin(AVLNode node) {
+    public AVLNode findMin(AVLNode node) {
+        
+        if (node == null) {
+            return null;
+        }
+
         while (node.left != null) {
             node = node.left;
         }
+        
         return node;
     }
 
@@ -184,5 +190,9 @@ public class AVLTree {
         }
 
         return node;
+    }
+
+    public AVLNode getRoot() {
+        return this.root;
     }
 }

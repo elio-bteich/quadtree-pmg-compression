@@ -24,7 +24,7 @@ public class CompressionMenu {
     public void applyCompression(){
         if(chooseCompression()){
             System.out.println("debut de la compression lambda: ");
-            newImage.lambdaCompressTree(newImage);
+            newImage.lambdaCompressTree();
         }else{
             System.out.println("debut de la compression rho: ");
             int rho = readRho();

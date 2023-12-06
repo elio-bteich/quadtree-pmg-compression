@@ -12,6 +12,11 @@ public class QuadTreeNode {
      */
     private int value;
     
+    /**
+     * The parent of the node, used in dynamic compression
+     * 
+     */
+    private QuadTreeNode parent;
 
     /**
      * The children children of a Node
@@ -29,6 +34,7 @@ public class QuadTreeNode {
      */
     public QuadTreeNode()
     {
+        this.parent = null;
         this.value = -1;
         this.children = null;
     }
@@ -41,8 +47,19 @@ public class QuadTreeNode {
      */
     public QuadTreeNode(int value)
     {
+        this.parent = null;
         this.value = value;
         this.children = null;
+    }
+
+    /**
+     * The getter of the parent of this node
+     * 
+     * @return the parent of this node
+     */
+    public QuadTreeNode getParent()
+    {
+        return this.parent;
     }
 
     /**
@@ -65,6 +82,21 @@ public class QuadTreeNode {
     public void setValue(int value)
     {
         this.value = value;
+    }
+
+    public boolean areChildrenEqual()
+    {
+        if (this.isTwigRoot()) {
+            int val = this.getChildValue(0);
+            boolean res = true;
+
+            for (int i = 1; i < 4; i++) {
+                res = res && this.getChildValue(i) == val;
+            }
+
+            return res;
+        }
+        return false;
     }
 
     /**
@@ -131,6 +163,7 @@ public class QuadTreeNode {
         for (int i = 0; i < 4; i++) 
         {
             this.children[i] = new QuadTreeNode();
+            this.children[i].parent = this;
         }
     }
 
