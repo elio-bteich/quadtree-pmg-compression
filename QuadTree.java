@@ -71,7 +71,14 @@ public class QuadTree {
             if (arr[startLine][startCol] == arr[startLine][endCol]
                     && arr[startLine][startCol] == arr[endLine][endCol]
                     && arr[startLine][startCol] == arr[endLine][startCol]) {
+
                 node.setValue(arr[startLine][startCol]);
+                QuadTreeNode currentParent = node.getParent();
+                while (currentParent != null && currentParent.areChildrenEqual()) {
+                    currentParent.setValue(currentParent.getChildValue(0));
+                    currentParent.destroyChildren();
+                    currentParent = currentParent.getParent();
+                }
             }
 
             else {

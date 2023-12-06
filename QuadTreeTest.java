@@ -8,7 +8,9 @@ public class QuadTreeTest {
         //testQuadTreeConstruction();
         //testLambdaCompressTree();
         //testRhoCompressTree();
-        testImage();
+        //testImageCompression();
+        testImageConstruction();
+
        // Replace "path/to/your/file.txt" with the actual file path you want to test
         //String filePath = "test.txt";
 
@@ -101,8 +103,18 @@ public class QuadTreeTest {
         printQuadTree(lowCompressionQuadTree.getRoot(), 0);
         System.out.println("-------------------------------");
     }
+
+    private static void testImageConstruction() {
+
+        int[][] image = Util.loadImage("train.pgm");
+
+        QuadTree tree = new QuadTree(image);
+        tree.lambdaCompressTree();
+        printQuadTree(tree.getRoot(), 0);
+        System.out.println("-------------------------------");
+    }
     
-    private static void testImage() {
+    private static void testImageCompression() {
 
         int[][] image = Util.loadImage("train.pgm");
 
