@@ -52,8 +52,8 @@ public class FileManager{
             int maxLuminosity = -1 ;
             PMG newImage;
             int[][] tQuadtree = null;
-            boolean isGood = true;
             String magicNumber = scanner.nextLine();
+            String comment = scanner.nextLine(); // Reading the comment
 
             // Check if the file starts with the correct magic number
             if (scanner.hasNextInt()) {
@@ -77,15 +77,11 @@ public class FileManager{
                         while (j < height && isGoodValue) {
                             value = scanner.nextInt();
                             isGoodValue = (value >= 0) && (value <= maxLuminosity);
-
                             if (isGoodValue) {
                                 tQuadtree[i][j] = value;
                                 j++;
-                                nbElements++;
-                                isGood = true;
                             } else {
                                 System.out.println("A value in the file exceeds the maximum luminosity.");
-                                isGood = false;
                             }
                         }
 
@@ -96,12 +92,8 @@ public class FileManager{
                     // Check if the number of elements matches the expected size
                     if (nbElements < (width * height)) {
                         System.out.println("Value missing in your file!");
-                        isGood = false;
                     }
-                } else {
-                    isGood = false;
-                }
-                
+                } 
             }
             // Create a QuadtreePrefab object with the loaded data and return it
             newImage = new PMG(tQuadtree,maxLuminosity);

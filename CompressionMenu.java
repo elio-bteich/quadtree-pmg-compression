@@ -38,11 +38,11 @@ public class CompressionMenu {
         if (chooseCompression()) {
             System.out.println("PROCESSING LAMBDA COMPRESSION: ");
             newImage.lambdaCompressTree();
-            FileManager.SaveImage(newImage, "testCompression.pgm");
+            FileManager.SaveImage(newImage, "CompressionLambda.pgm");
         } else {
             System.out.println("PROCESSING RHO COMPRESSION: ");
             newImage.rhoCompressTree(readRho());
-            FileManager.SaveImage(newImage, "testCompression.pgm");
+            FileManager.SaveImage(newImage, "CompressionRHO.pgm");
         }
         System.out.println("COMPRESSION COMPLETED!");
     }
