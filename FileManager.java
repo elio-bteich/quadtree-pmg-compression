@@ -104,7 +104,7 @@ public class FileManager{
                 
             }
             // Create a QuadtreePrefab object with the loaded data and return it
-            newImage = new PMG(tQuadtree, isGood,maxLuminosity);
+            newImage = new PMG(tQuadtree,maxLuminosity);
             return newImage;
         } catch (FileNotFoundException e) {
             System.err.println("Error reading the file: " + e.getMessage());

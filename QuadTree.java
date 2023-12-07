@@ -47,12 +47,12 @@ public class QuadTree {
      * 
      */
     public QuadTree(String path) {
-        int[][] image = FileManager.loadImage(path);
+        PMG image = FileManager.loadImage(path);
         this.root = new QuadTreeNode();
-        this.length = image.length;
+        this.length = image.getLuminosities().length;
         nbNodes = 1;
 
-        constructQuadtree(root, image, 0, 0, image.length - 1, image.length - 1);
+        constructQuadtree(root, image.getLuminosities(), 0, 0, image.getLuminosities().length - 1, image.getLuminosities().length - 1);
     }
 
     /**
