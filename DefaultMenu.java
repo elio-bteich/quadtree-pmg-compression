@@ -7,7 +7,7 @@ public class DefaultMenu {
 
     public DefaultMenu(String image,int rho){
         this.rho = rho;
-        this.newImage = new QuadTree(Util.loadImage(image));
+        this.newImage = new QuadTree(image);
     }
 
 

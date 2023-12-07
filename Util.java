@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 public class Util{
 
-
     /**
     * Vérifie si un nombre est une puissance de 2.
     *
@@ -24,34 +23,35 @@ public class Util{
         return (nombre & (nombre - 1)) == 0;
     }
 
-/**
-* Vérifie si le format d'image est correct.
-*
-* @param magicNumber Le numéro magique du format d'image.
-* @param width La largeur de l'image.
-* @param height La hauteur de l'image.
-* @return true si le format est correct, sinon false.
-*/
-private static boolean isGoodFormat(String magicNumber, int width, int height) {
-    // Variables
-    boolean isGoodFormat;
+    /**
+    * Vérifie si le format d'image est correct.
+    *
+    * @param magicNumber Le numéro magique du format d'image.
+    * @param width La largeur de l'image.
+    * @param height La hauteur de l'image.
+    * @return true si le format est correct, sinon false.
+    */
+    private static boolean isGoodFormat(String magicNumber, int width, int height) {
+        // Variables
+        boolean isGoodFormat;
     
    
-    // Vérifier si toutes les conditions sont remplies
-    if (magicNumber.startsWith("P2")){
-        isGoodFormat = true;
-        if(width == height && estPuissanceDeDeux(width) ){
+        // Vérifier si toutes les conditions sont remplies
+        if (magicNumber.startsWith("P2")){
             isGoodFormat = true;
+            if(width == height && estPuissanceDeDeux(width) ){
+                isGoodFormat = true;
+            }else{
+                System.out.println("taille de l'image incorrecte!");
+                isGoodFormat = false;
+            }
         }else{
-            System.out.println("taille de l'image incorrecte!");
             isGoodFormat = false;
+            System.out.println("Format de fichier incorrecte!");
         }
-    }else{
-        isGoodFormat = false;
-        System.out.println("Format de fichier incorrecte!");
+        return isGoodFormat;
     }
-    return isGoodFormat;
-}
+
     /**
      * Lit le contenu d'un fichier et renvoie un tableau 2D d'entiers.
      *
@@ -118,22 +118,23 @@ private static boolean isGoodFormat(String magicNumber, int width, int height) {
     public static void SaveImage(QuadTree image ,String file ){
        
         String mot;
-        int[][] grilleTemp = new int[image.getHeight()][image.getHeight()];//initialisation du tableau a la taille stocké dans le quadtree
-        //createGrilleTemp(image.getRoot(),grilleTemp, 0, 0, image.getHeight(), image.getHeight());//remplissage du tableau avec les valeur du quadtree
+        int length = image.getLength();
+        int[][] grilleTemp = new int[length][length];
+        //createGrilleTemp(image.getRoot(),grilleTemp, 0, 0, length, length);//remplissage du tableau avec les valeur du quadtree
 
         try ( FileWriter writer = new FileWriter(new File(file))){
             writer.write("P2");
             writer.write(System.lineSeparator()); // Ajouter un saut de ligne
             writer.write("# c'est un commentaire juste pour faire genre");
             writer.write(System.lineSeparator()); 
-            mot = String.valueOf(image.getHeight());
+            mot = String.valueOf(length);
             writer.write(mot + " "+ mot);
             writer.write(System.lineSeparator()); 
             mot = String.valueOf(255);
             writer.write(mot);
             writer.write(System.lineSeparator()); 
-            for (int i = 0; i < grilleTemp.length; i++) {
-                for (int j = 0; j < grilleTemp[i].length; j++) {
+            for (int i = 0; i < length; i++) {
+                for (int j = 0; j < length; j++) {
                     mot = String.valueOf(grilleTemp[i][j]); 
                     writer.write(mot+ " ");
                 }

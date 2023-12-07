@@ -11,28 +11,10 @@ public class QuadTree {
      * epsilon
      * to be able to determine in a efficient way with a logarithmic complexity
      * which twig
-     * has the less luminosity difference to give it priority for future compressions
+     * has the less luminosity difference to give it compression priority
      * 
      */
-    private TwigAVLTree twigs;
-
-    /**
-     * The root attribute of this quadtree
-     * 
-     */
-    private QuadTreeNode root;
-
-    /**
-     * The length of the original image
-     * 
-     */
-    private int length;
-
-    /**
-     * Number of nodes in the tree
-     * 
-     */
-    private int nbNodes;
+    private AVLTree twigs;
 
     /**
      * The maximum luminosity of the image represented by this tree
@@ -41,18 +23,40 @@ public class QuadTree {
     private int maxLuminosity;
 
     /**
-     * Construct quadtree from 2d array representation of the image
-     * 
-     * @param path The local path of the image
+     * The root attribute of this quadtree
      * 
      */
-    public QuadTree(String path) {
-        int[][] image = Util.loadImage(path);
-        this.root = new QuadTreeNode();
-        this.length = image.length;
-        nbNodes = 1;
+    private QuadTreeNode root;
 
-        constructQuadtree(root, image, 0, 0, image.length - 1, image.length - 1);
+    /**
+     * The height of the quadtree which is the log2 of the image side length.
+     * We can get the image side length by doing 2^height
+     * This height is used to reconstruct the image file
+     * 
+     */
+    private int height;
+
+    /**
+     * Number of nodes in the tree
+     * 
+     */
+    private int nbNodes;
+
+    private static final double UNDEFINED_LOG_LUMINOSITY = Double.MIN_VALUE;
+
+    /**
+     * Construct quadtree from 2d array representation of the image
+     * 
+     * @param arr The 2d representation of the image
+     * 
+     */
+    public QuadTree(int[][] arr) {
+        this.root = new QuadTreeNode();
+        nbNodes = 1;
+        this.height = (int) (Math.log(arr.length) / Math.log(2));
+        
+
+        constructQuadtree(root, arr, 0, 0, arr.length - 1, arr.length - 1);
     }
 
     /**
@@ -75,15 +79,38 @@ public class QuadTree {
                     && arr[startLine][startCol] == arr[endLine][endCol]
                     && arr[startLine][startCol] == arr[endLine][startCol]) {
                 
-                node.setValue(arr[startLine][startCol]);
-
-                QuadTreeNode currentParent = node.getParent();
+                System.out.println("------2x2 array has same values values------");
+                System.out.println();
+                System.out.println("creating 1 leaf with value " + arr[startLine][startCol] + " instead of a twig");
                 
+                node.setValue(arr[startLine][startCol]);
+                QuadTreeNode currentParent = node.getParent();
+                System.out.println("****checking if parent is a twig now and has the same children****");
+                if (currentParent == null) {
+                        System.out.println("we are the root now so we don't have a parent");
+                    } else if (!currentParent.areChildrenEqual()) {
+                        currentParent.printChildren();
+                        System.out.println("either we are not a twig or we are a twig but don't have the same children");
+                    }
                 while (currentParent != null && currentParent.areChildrenEqual()) {
+                    System.out.println("parent is a twig now!");
+                    currentParent.printChildren();
+                    System.out.println("has same children values so compressing and replacing with leaf " + currentParent.getChildValue(0));
                     currentParent.setValue(currentParent.getChildValue(0));
                     currentParent.destroyChildren();
                     currentParent = currentParent.getParent();
+                    System.out.println("****checking if parent is a twig now and has the same children****");
+                    if (currentParent == null) {
+                        System.out.println("we are the root now so we don't have a parent");
+                    } else if (!currentParent.areChildrenEqual()) {
+                        currentParent.printChildren();
+                        System.out.println("either we are not a twig or we are a twig but don't have the same children");
+                    }
                 }
+
+                System.out.println("------end 2x2 array has same values------");                
+                System.out.println();
+
             }
 
             else {
@@ -93,13 +120,23 @@ public class QuadTree {
                 node.setChildValue(2, arr[endLine][endCol]);
                 node.setChildValue(3, arr[endLine][startCol]);
                 this.nbNodes += 4;
+
+                System.out.println();
+                System.out.println("----------creating twig-----------");
+
+                System.out.println(arr[startLine][startCol]);
+                System.out.println(arr[startLine][endCol]);
+                System.out.println(arr[endLine][endCol]);
+                System.out.println(arr[endLine][startCol]);
+
+                System.out.println("----------end creating twig-----------");
+                System.out.println();
             }
 
         }
 
         else {
             node.createChildren();
-
             constructQuadtree(node.getChild(0), arr, startLine, startCol, startLine + (endLine - startLine) / 2,
                     startCol + (endCol - startCol) / 2);
             constructQuadtree(node.getChild(1), arr, startLine, startCol + (endCol - startCol) / 2 + 1,
@@ -112,40 +149,6 @@ public class QuadTree {
                     startCol + (endCol - startCol) / 2);
             this.nbNodes += 4;
         }
-    }
-
-    /**
-     * Convert the quadtree to its parenthesized string representation.
-     * 
-     * @return The parenthesized string representation of the quadtree.
-     */
-    public String toString() {
-        return toString(root);
-    }
-
-    /**
-     * Helper method for recursively building the parenthesized string representation.
-     * 
-     * @param node The current node in the traversal.
-     * @return The parenthesized string representation.
-     */
-    private String toString(QuadTreeNode node) {
-        if (node != null) {
-            if (node.isLeaf()) {
-                return node.getValue() + " ";
-            } else {
-                String result = "(";
-                for (int i = 0; i < 4; i++) {
-                    result += toString(node.getChild(i));
-                    if (i < 3) {
-                        result += " ";
-                    }
-                }
-                result += ")";
-                return result;
-            }
-        }
-        return "";
     }
 
     /**
@@ -185,7 +188,7 @@ public class QuadTree {
      * 
      */
     public static void lambdaCompressTwig(QuadTreeNode twigRoot) {
-        twigRoot.setValue((int)Math.round(CompressionCalculation.calculateAvgLogLuminosity(twigRoot)));
+        twigRoot.setValue((int)Math.round(calculateAvgLogLuminosity(twigRoot)));
         twigRoot.destroyChildren();
     }
 
@@ -193,25 +196,18 @@ public class QuadTree {
      * Méthode pour compresser le quadtree avec l'algorithme Rho.
      * 
      * @param rho La valeur de ρ pour la compression Rho.
-     * 
      */
-    public void rhoCompressTree(int rho) {
+    public void rhoCompressTree(double rho) {
         detectCompressableTwigs();
         rhoCompressTree_(rho);
         this.twigs = null;
     }
 
-    /**
-     * Compresses the quadtree with the Rho compression algorithm.
-     *
-     * @param rho The value of ρ for the Rho compression.
-     * 
-     */
-    public void rhoCompressTree_(int rho) {
+    public void rhoCompressTree_(double rho) {
         int initial_nodes_number = this.nbNodes;
-        TwigAVLNode minTwig = this.twigs.findMin(twigs.getRoot());
+        AVLNode minTwig = this.twigs.findMin(twigs.getRoot());
         double ratio = 1.0;
-        while (minTwig != null && ratio*100 > rho) {
+        while (minTwig != null && ratio > rho) {
             lambdaCompressTwig(minTwig.quadNode);
             this.twigs.delete(minTwig.epsilon);
             this.nbNodes -= 4;
@@ -224,7 +220,7 @@ public class QuadTree {
             }
             
             if (parentNode.isTwigRoot()) {
-                double epsilon = CompressionCalculation.calculateEpsilon(parentNode);
+                double epsilon = calculateEpsilon(parentNode);
                 twigs.insert(epsilon, parentNode);
             }
 
@@ -234,26 +230,21 @@ public class QuadTree {
 
     }
 
-    /**
-     * Detects compressible twigs and add them to twigs AVL for future compressions.
-     *
-     */
     private void detectCompressableTwigs() {
-        this.twigs = new TwigAVLTree();
+        this.twigs = new AVLTree();
         detectCompressableTwigs(this.root);
     }
 
     /**
-     *  Insert all twigs in the AVL twigs tree 
+     *  Insert all twigs in the avl twigs tree 
      * 
      * @param node the current node of the recursive traversal
-     * 
      */
     private void detectCompressableTwigs(QuadTreeNode node) {
         if (node != null && !node.isLeaf()) {
 
             if (node.isTwigRoot()) {
-                double epsilon = CompressionCalculation.calculateEpsilon(node);
+                double epsilon = calculateEpsilon(node);
                 this.twigs.insert(epsilon, node);
             } else {
                 for (int i = 0; i < 4; i++) {
@@ -262,6 +253,42 @@ public class QuadTree {
             }
 
         }
+    }
+
+    private static double calculateAvgLogLuminosity(QuadTreeNode node) {
+
+        if (node.isTwigRoot()) {
+            double res = 0;
+
+            for (int i = 0; i < 4; i++) {
+                res += Math.log(0.1 + node.getChildValue(i));
+            }
+
+            res = Math.exp(0.25 * res);
+            return res;
+        }
+
+        return UNDEFINED_LOG_LUMINOSITY;
+    }
+
+    private static double calculateEpsilon(QuadTreeNode node) {
+
+        double maxEpsilon = Double.MIN_VALUE;
+
+        double avgLogLuminosity = calculateAvgLogLuminosity(node);
+
+        for (int i = 0; i < 4; i++) {
+
+            QuadTreeNode child = node.getChild(i);
+
+            if (child != null && child.isLeaf()) {
+
+                double epsilon = Math.abs(avgLogLuminosity - child.getValue());
+                maxEpsilon = Math.max(maxEpsilon, epsilon);
+            }
+        }
+
+        return maxEpsilon;
     }
 
     /**
@@ -275,21 +302,35 @@ public class QuadTree {
     }
 
     /**
-     * Get the length of the original image
+     * Set the root of this quadtree
      * 
-     * @return the length of the original image
+     * @param root the node that we want to set as the root of this quadtree
      * 
      */
-    public int getLength() {
-        return this.length;
+    public void setRoot(QuadTreeNode root) {
+        this.root = root;
     }
 
     /**
-     * Gets the number of nodes in the tree.
-     *
-     * @return The number of nodes in the tree.
+     * Get the height of this quadtree
+     * 
+     * @return the height of this quadtree
      * 
      */
+    public int getHeight() {
+        return this.height;
+    }
+
+    /**
+     * Set the height of this quadtree
+     * 
+     * @param height the height of this quadtree
+     *
+     */
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
     public int getNbNodes()
     {
         return this.nbNodes;

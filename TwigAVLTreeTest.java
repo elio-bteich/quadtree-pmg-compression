@@ -1,6 +1,6 @@
-public class AVLTreeTest {
+public class TwigAVLTreeTest {
     public static void main(String[] args) {
-        AVLTree avlTree = new AVLTree();
+        TwigAVLTree avlTree = new TwigAVLTree();
 
         QuadTreeNode quadTreeNode1 = createQuadTreeNode(1, 2, 3, 4);
         QuadTreeNode quadTreeNode2 = createQuadTreeNode(5, 6, 7, 8);

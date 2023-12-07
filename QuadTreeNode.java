@@ -27,7 +27,6 @@ public class QuadTreeNode {
      */
     private QuadTreeNode[] children;
 
-
     /**
      * The constructor of this node 
      *
