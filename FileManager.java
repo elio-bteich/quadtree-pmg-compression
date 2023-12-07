@@ -80,6 +80,7 @@ public class FileManager{
                             if (isGoodValue) {
                                 tQuadtree[i][j] = value;
                                 j++;
+                                nbElements++;
                             } else {
                                 System.out.println("A value in the file exceeds the maximum luminosity.");
                             }
