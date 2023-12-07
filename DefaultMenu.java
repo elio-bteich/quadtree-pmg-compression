@@ -25,13 +25,13 @@ public class DefaultMenu {
         // Lambda compression
         System.out.println("PROCESSING LAMBDA COMPRESSION: ");
         newImage.lambdaCompressTree();
-        FileManger.SaveImage(newImage, "testCompression1.pgm");
+        FileManager.SaveImage(newImage, "testCompression1.pgm");
         System.out.println("COMPRESSION COMPLETED!");
 
         // RHO compression
         System.out.println("PROCESSING RHO COMPRESSION: ");
         newImage.rhoCompressTree(rho);
-        FileManger.SaveImage(newImage, "testCompression2.pgm");
+        FileManager.SaveImage(newImage, "testCompression2.pgm");
         System.out.println("COMPRESSION COMPLETED!");
     }
 }

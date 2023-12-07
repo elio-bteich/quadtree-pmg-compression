@@ -174,6 +174,7 @@ public class TwigAVLTree {
      *
      * @param node The AVL node for which to determine the height.
      * @return The height of the AVL node or 0 if the node is null.
+     * 
      */
     private int height(TwigAVLNode node) {
         return (node != null) ? node.height : 0;
@@ -183,6 +184,7 @@ public class TwigAVLTree {
      * Updates the height and balance factor of the specified AVL node based on its children's heights.
      *
      * @param node The AVL node to update.
+     * 
      */
     private void updateHeight(TwigAVLNode node) {
         if (node != null) {
@@ -196,6 +198,7 @@ public class TwigAVLTree {
      *
      * @param node The AVL node for which to calculate the balance factor.
      * @return The balance factor (difference in heights between right and left subtrees).
+     * 
      */
     private int balanceFactor(TwigAVLNode node) {
         return (node != null) ? height(node.right) - height(node.left) : 0;
@@ -206,6 +209,7 @@ public class TwigAVLTree {
      *
      * @param x The AVL node to rotate.
      * @return The new root of the rotated subtree.
+     * 
      */
     private TwigAVLNode rotateLeft(TwigAVLNode x) {
         TwigAVLNode y = x.right;
@@ -223,6 +227,7 @@ public class TwigAVLTree {
      *
      * @param y The AVL node to rotate.
      * @return The new root of the rotated subtree.
+     * 
      */
     private TwigAVLNode rotateRight(TwigAVLNode y) {
         TwigAVLNode x = y.left;
@@ -240,6 +245,7 @@ public class TwigAVLTree {
      *
      * @param x The AVL node to rotate.
      * @return The new root of the double-rotated subtree.
+     * 
      */
     private TwigAVLNode doubleRotateLeft(TwigAVLNode x) {
         x.right = rotateRight(x.right);
@@ -251,6 +257,7 @@ public class TwigAVLTree {
      *
      * @param y The AVL node to rotate.
      * @return The new root of the double-rotated subtree.
+     * 
      */
     private TwigAVLNode doubleRotateRight(TwigAVLNode y) {
         y.left = rotateLeft(y.left);
@@ -262,6 +269,7 @@ public class TwigAVLTree {
      *
      * @param node The AVL node to balance.
      * @return The new root of the balanced subtree.
+     * 
      */
     private TwigAVLNode balance(TwigAVLNode node) {
         int bal = balanceFactor(node);
