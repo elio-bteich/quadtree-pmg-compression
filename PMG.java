@@ -1,7 +1,6 @@
-public class QuadtreePrefab {
-    private int[][] tQuadtree; // The array from which the Quadtree will be constructed
-    private boolean isGoodPrefabs; // True if all values were correctly read from the file, false otherwise
-    private int maxLuminosity; // Maximum luminosity value
+public class PMG {
+    private int[][] luminosities; 
+    private int maxLuminosity;
 
     /**
      * Constructor for the QuadtreePrefab class.
@@ -10,37 +9,27 @@ public class QuadtreePrefab {
      * @param isGood True if all values were correctly read from the file, false otherwise.
      * @param maxL   The maximum luminosity value.
      */
-    public QuadtreePrefab(int[][] T, boolean isGood, int maxL) {
-        this.tQuadtree = T;
-        this.isGoodPrefabs = isGood;
+    public PMG(int[][] T, int maxL) {
+        this.luminosities = T;
         this.maxLuminosity = maxL;
     }
 
     /**
      * Default constructor for the QuadtreePrefab class.
      */
-    public QuadtreePrefab() {
-        this.tQuadtree = null;
-        this.isGoodPrefabs = true;
+    public PMG() {
+        this.luminosities = null;
         this.maxLuminosity = -1;
     }
 
-    /**
-     * Gets the validity of the Quadtree prefabs.
-     *
-     * @return True if all values were correctly read from the file, false otherwise.
-     */
-    public boolean getIsGoodPrefabs() {
-        return this.isGoodPrefabs;
-    }
 
     /**
      * Gets the array from which the Quadtree will be constructed.
      *
      * @return The array from which the Quadtree will be constructed.
      */
-    public int[][] getTableau() {
-        return this.tQuadtree;
+    public int[][] getLuminosities() {
+        return this.luminosities;
     }
 
     /**
@@ -48,17 +37,8 @@ public class QuadtreePrefab {
      *
      * @param T The new array to be assigned.
      */
-    public void setTableau(int[][] T) {
-        this.tQuadtree = T;
-    }
-
-    /**
-     * Sets the validity of the Quadtree prefabs.
-     *
-     * @param isGood True if all values were correctly read from the file, false otherwise.
-     */
-    public void setIsGoodPrefabs(boolean isGood) {
-        this.isGoodPrefabs = isGood;
+    public void setLuminosities(int[][] T) {
+        this.luminosities = T;
     }
 
     /**

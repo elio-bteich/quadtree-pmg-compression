@@ -45,12 +45,12 @@ public class FileManager{
      * @return A 2D array of integers, or null in case of a file reading error.
      * @throws FileNotFoundException If the specified file is not found.
      */
-    public static QuadtreePrefab loadImage(String path) {
+    public static PMG loadImage(String path) {
         try (Scanner scanner = new Scanner(new File(path))) {
             int width;
             int height;
             int maxLuminosity = -1 ;
-            QuadtreePrefab newImage;
+            PMG newImage;
             int[][] tQuadtree = null;
             boolean isGood = true;
             String magicNumber = scanner.nextLine();
@@ -104,7 +104,7 @@ public class FileManager{
                 
             }
             // Create a QuadtreePrefab object with the loaded data and return it
-            newImage = new QuadtreePrefab(tQuadtree, isGood,maxLuminosity);
+            newImage = new PMG(tQuadtree, isGood,maxLuminosity);
             return newImage;
         } catch (FileNotFoundException e) {
             System.err.println("Error reading the file: " + e.getMessage());

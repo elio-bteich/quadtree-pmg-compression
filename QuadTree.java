@@ -47,7 +47,7 @@ public class QuadTree {
      * 
      */
     public QuadTree(String path) {
-        int[][] image = Util.loadImage(path);
+        int[][] image = FileManager.loadImage(path);
         this.root = new QuadTreeNode();
         this.length = image.length;
         nbNodes = 1;
@@ -185,7 +185,7 @@ public class QuadTree {
      * 
      */
     public static void lambdaCompressTwig(QuadTreeNode twigRoot) {
-        twigRoot.setValue((int)Math.round(CompressionCalculation.calculateAvgLogLuminosity(twigRoot)));
+        twigRoot.setValue((int)Math.round(Util.calculateAvgLogLuminosity(twigRoot)));
         twigRoot.destroyChildren();
     }
 
@@ -224,7 +224,7 @@ public class QuadTree {
             }
             
             if (parentNode.isTwigRoot()) {
-                double epsilon = CompressionCalculation.calculateEpsilon(parentNode);
+                double epsilon = Util.calculateEpsilon(parentNode);
                 twigs.insert(epsilon, parentNode);
             }
 
@@ -253,7 +253,7 @@ public class QuadTree {
         if (node != null && !node.isLeaf()) {
 
             if (node.isTwigRoot()) {
-                double epsilon = CompressionCalculation.calculateEpsilon(node);
+                double epsilon = Util.calculateEpsilon(node);
                 this.twigs.insert(epsilon, node);
             } else {
                 for (int i = 0; i < 4; i++) {
