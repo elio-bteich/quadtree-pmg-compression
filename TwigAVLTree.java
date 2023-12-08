@@ -27,6 +27,7 @@ public class TwigAVLTree {
         } else if (epsilon > node.epsilon) {
             node.right = insert(node.right, epsilon, quadNode);
         } else {
+            node.quadNodes.add(quadNode);
             return node;
         }
 
@@ -74,18 +75,24 @@ public class TwigAVLTree {
         } else if (epsilon > node.epsilon) {
             node.right = delete(node.right, epsilon);
         } else {
-            if (node.left == null || node.right == null) {
-                TwigAVLNode temp = (node.left != null) ? node.left : node.right;
-                if (temp == null) {
-                    temp = node;
-                    node = null;
-                } else {
-                    node = temp;
-                }
+            if (node.quadNodes.size() > 1) {
+                // If there are multiple QuadTreeNode references, just remove one
+                node.quadNodes.remove(0);
             } else {
-                TwigAVLNode temp = findMin(node.right);
-                node.epsilon = temp.epsilon;
-                node.right = delete(node.right, temp.epsilon);
+                // If there is only one QuadTreeNode reference or none, perform deletion logic
+                if (node.left == null || node.right == null) {
+                    TwigAVLNode temp = (node.left != null) ? node.left : node.right;
+                    if (temp == null) {
+                        temp = node;
+                        node = null;
+                    } else {
+                        node = temp;
+                    }
+                } else {
+                    TwigAVLNode temp = findMin(node.right);
+                    node.epsilon = temp.epsilon;
+                    node.right = delete(node.right, temp.epsilon);
+                }
             }
         }
 
@@ -99,10 +106,11 @@ public class TwigAVLTree {
     }
 
     /**
-     * Retrieves the QuadTreeNode associated with the given epsilon value.
+     * Retrieves a QuadTreeNode associated with the given epsilon value.
+     * Returns null if no QuadTreeNode is associated.
      *
      * @param epsilon   The epsilon value to search for in the AVL tree.
-     * @return The QuadTreeNode associated with the specified epsilon, or null if not found.
+     * @return A QuadTreeNode associated with the specified epsilon, or null if not found.
      * 
      */
     public QuadTreeNode getQuadTreeNodeByEpsilon(double epsilon) {
@@ -119,8 +127,8 @@ public class TwigAVLTree {
         } else if (epsilon > node.epsilon) {
             return getQuadTreeNodeByEpsilon(node.right, epsilon);
         } else {
-            // Epsilon matches, return the associated QuadTreeNode
-            return node.quadNode;
+            // Return the first QuadTreeNode in the list (if any)
+            return (node.quadNodes.isEmpty()) ? null : node.quadNodes.get(0);
         }
     }
 

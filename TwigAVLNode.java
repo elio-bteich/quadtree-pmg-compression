@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Represents a node in the AVL tree used for storing Twigs.
  * 
@@ -35,10 +37,11 @@ class TwigAVLNode {
     int bal;
 
     /**
-     * Reference to the QuadTreeNode associated with this AVL node.
+     * List of references to the quadtree nodes associated with this AVL node.
+     * In other terms, this list has all the twig roots of the quadtree that has the same epsilon
      * 
      */
-    QuadTreeNode quadNode;
+    ArrayList<QuadTreeNode> quadNodes;
 
     /**
      * Constructs a new TwigAVLNode with the specified epsilon and QuadTreeNode.
@@ -53,6 +56,7 @@ class TwigAVLNode {
         this.bal = 0;
         this.left = null;
         this.right = null;
-        this.quadNode = quadNode;
+        this.quadNodes = new ArrayList<>();
+        this.quadNodes.add(quadNode);    
     }
 }

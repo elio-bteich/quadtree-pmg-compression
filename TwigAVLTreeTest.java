@@ -15,27 +15,17 @@ public class TwigAVLTreeTest {
         avlTree.insert(0.8, quadTreeNode4);
         avlTree.insert(0.3, quadTreeNode5);
         avlTree.insert(0.7, quadTreeNode6);
+        avlTree.insert(0.1, quadTreeNode6);
+
 
         // Display AVL Tree
         System.out.println("AVL Tree:");
         avlTree.print();
 
-        double targetEpsilon = 0.3;
-        QuadTreeNode resultNode = avlTree.getQuadTreeNodeByEpsilon(targetEpsilon);
-
-        if (resultNode != null) {
-            System.out.println("QuadTreeNode found: ");
-            QuadTree.lambdaCompressTwig(resultNode);
-            System.out.println("is twig a leaf after compression: " + resultNode.isLeaf());
-            System.out.println("twig value after compression: " + resultNode.getValue());
-        } else {
-            System.out.println("QuadTreeNode not found for epsilon: " + targetEpsilon);
-        }
-
         double searchEpsilon = 0.3;
         System.out.println("Search for " + searchEpsilon + ": " + avlTree.search(searchEpsilon));
 
-        double deleteEpsilon = 0.5;
+        double deleteEpsilon = 0.1;
         System.out.println("Deletion of " + deleteEpsilon);
         avlTree.delete(deleteEpsilon);
 
