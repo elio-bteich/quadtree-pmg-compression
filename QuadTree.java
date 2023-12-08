@@ -150,7 +150,7 @@ public class QuadTree {
         if (node != null) {
             if (node.isLeaf()) {
                 return node.getValue() + " ";
-            } else {
+            } else if(node.isTwigRoot()){
                 String result = "(";
                 for (int i = 0; i < 4; i++) {
                     result += toString(node.getChild(i));

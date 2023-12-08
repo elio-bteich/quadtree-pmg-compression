@@ -5,8 +5,8 @@
 public class QuadTreeTest {
 
     public static void main(String[] args) {
-        testImageCompression();
-        //testImageConstruction();
+        //testImageCompression();
+        testImageConstruction();
     }
 
     private static void printQuadTree(QuadTreeNode node, int depth) {
@@ -28,7 +28,6 @@ public class QuadTreeTest {
     private static void testImageConstruction() {
 
         QuadTree tree = new QuadTree("tree.pgm");
-        tree.lambdaCompressTree();
         printQuadTree(tree.getRoot(), 0);
         System.out.println("-------------------------------");
     }
