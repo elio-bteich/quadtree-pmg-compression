@@ -83,14 +83,6 @@ public class QuadTree {
                     && arr[startLine][startCol] == arr[endLine][startCol]) {
                 
                 node.setValue(arr[startLine][startCol]);
-
-                QuadTreeNode currentParent = node.getParent();
-                
-                while (currentParent != null && currentParent.areChildrenEqual()) {
-                    currentParent.setValue(currentParent.getChildValue(0));
-                    currentParent.destroyChildren();
-                    currentParent = currentParent.getParent();
-                }
             }
 
             else {
@@ -117,7 +109,14 @@ public class QuadTree {
                     endLine, endCol);
             constructQuadtree(node.getChild(3), arr, startLine + (endLine - startLine) / 2 + 1, startCol, endLine,
                     startCol + (endCol - startCol) / 2);
-            this.nbNodes += 4;
+                    
+            if(node.areChildrenEqual()){
+                node.setValue(node.getChildValue(0));
+                node.destroyChildren();
+            }else{
+                this.nbNodes+=4;
+            }
+            
         }
     }
 
