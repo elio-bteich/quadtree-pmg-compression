@@ -3,7 +3,7 @@ public class PMG {
     private int maxLuminosity;
 
     /**
-     * Constructor for the PMG class.
+     * Constructor for the QuadtreePrefab class.
      *
      * @param T      The array from which the Quadtree will be constructed.
      * @param isGood True if all values were correctly read from the file, false otherwise.
@@ -15,7 +15,7 @@ public class PMG {
     }
 
     /**
-     * Default constructor for the PMG class.
+     * Default constructor for the QuadtreePrefab class.
      */
     public PMG() {
         this.luminosities = null;

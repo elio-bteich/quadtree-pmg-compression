@@ -20,8 +20,7 @@ public class MainMenu {
      */
     public void start() {
         displayImages();
-        compressedQuadtree = new QuadTree(images.get(readAnswer()));
-        System.out.println("construction de l'arbre ok ");
+        compressedQuadtree = new QuadTree(images.get(readAnswer()));  
         compMenu = new CompressionMenu(compressedQuadtree);
         compMenu.start();
     }

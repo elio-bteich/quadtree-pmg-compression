@@ -41,6 +41,12 @@ public class QuadTree {
     private int maxLuminosity;
 
     /**
+     * The name of the image
+     * 
+     */
+    private String imageName;
+
+    /**
      * Construct quadtree from 2d array representation of the image
      * 
      * @param path The local path of the image
@@ -51,6 +57,7 @@ public class QuadTree {
         this.root = new QuadTreeNode();
         this.length = image.getLuminosities().length;
         nbNodes = 1;
+        this.imageName =  "compressed-"+ path;
 
         constructQuadtree(root, image.getLuminosities(), 0, 0, image.getLuminosities().length - 1, image.getLuminosities().length - 1);
     }
@@ -124,6 +131,16 @@ public class QuadTree {
     }
 
     /**
+     *  Save the New compressed image in a PGM file
+     * 
+     * @param paht the where to save the image
+     * 
+     */
+    public void toPgm(String path){
+        FileManager.SaveImage(this, path);
+    }
+
+    /**
      * Helper method for recursively building the parenthesized string representation.
      * 
      * @param node The current node in the traversal.
@@ -147,6 +164,8 @@ public class QuadTree {
         }
         return "";
     }
+
+
 
     /**
      * Compress the quadtree with lambda method
@@ -293,5 +312,16 @@ public class QuadTree {
     public int getNbNodes()
     {
         return this.nbNodes;
+    }
+
+    /**
+     * Gets the name of thr image.
+     *
+     * @return The name of the image.
+     * 
+     */
+    public String getImageName()
+    {
+        return this.imageName;
     }
 }

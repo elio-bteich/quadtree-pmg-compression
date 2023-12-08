@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class CompressionMenu {
@@ -38,11 +39,23 @@ public class CompressionMenu {
         if (chooseCompression()) {
             System.out.println("PROCESSING LAMBDA COMPRESSION: ");
             newImage.lambdaCompressTree();
-            FileManager.SaveImage(newImage, "CompressionLambda.pgm");
+            try {
+                FileManager.saveQuatree(( newImage.getImageName().substring(0,newImage.getImageName().length()- 3)) + "txt", newImage.toString());
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            newImage.toPgm("Lambda"+newImage.getImageName());
         } else {
             System.out.println("PROCESSING RHO COMPRESSION: ");
             newImage.rhoCompressTree(readRho());
-            FileManager.SaveImage(newImage, "CompressionRHO.pgm");
+             try {
+                FileManager.saveQuatree(( newImage.getImageName().substring(0,newImage.getImageName().length()- 3)) + "txt", newImage.toString());
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            newImage.toPgm("RHO"+newImage.getImageName());
         }
         System.out.println("COMPRESSION COMPLETED!");
     }

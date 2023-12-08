@@ -38,6 +38,19 @@ public class FileManager{
         return isGoodFormat;
     }
 
+    /*
+     * 
+     */
+    public static void saveQuatree(String file,String quadtree) throws IOException{
+         try ( FileWriter writer = new FileWriter(new File(file))){
+             writer.write(quadtree);
+            // Quadtree file header
+         } catch (FileNotFoundException e) {
+            // Handling error in case of file writing failure
+            System.err.println("Error writing to the file: : " + e.getMessage());}
+
+    }
+
     /**
      * Reads the content of a file and returns a 2D array of integers.
      *
