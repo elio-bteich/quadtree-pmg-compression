@@ -22,12 +22,12 @@ public class TwigAVLTree {
             return new TwigAVLNode(epsilon, quadNode);
         }
 
-        if (epsilon < node.epsilon) {
-            node.left = insert(node.left, epsilon, quadNode);
-        } else if (epsilon > node.epsilon) {
-            node.right = insert(node.right, epsilon, quadNode);
+        if (epsilon < node.getEpsilon()) {
+            node.setLeft(insert(node.getLeft(), epsilon, quadNode));
+        } else if (epsilon > node.getEpsilon()) {
+            node.setRight(insert(node.getRight(), epsilon, quadNode));
         } else {
-            node.quadNodes.add(quadNode);
+            node.addToQuadNodes(quadNode);
             return node;
         }
 
@@ -46,12 +46,12 @@ public class TwigAVLTree {
 
     private void print(TwigAVLNode node, int level) {
         if (node != null) {
-            print(node.right, level + 1);
+            print(node.getRight(), level + 1);
             for (int i = 0; i < level; i++) {
                 System.out.print("   ");
             }
-            System.out.println(node.epsilon + " (Balance: " + node.bal + ")");
-            print(node.left, level + 1);
+            System.out.println(node.getEpsilon() + " (Balance: " + node.getBal() + ")");
+            print(node.getLeft(), level + 1);
         }
     }
 
@@ -70,18 +70,18 @@ public class TwigAVLTree {
             return null;
         }
 
-        if (epsilon < node.epsilon) {
-            node.left = delete(node.left, epsilon);
-        } else if (epsilon > node.epsilon) {
-            node.right = delete(node.right, epsilon);
+        if (epsilon < node.getEpsilon()) {
+            node.setLeft(delete(node.getLeft(), epsilon));
+        } else if (epsilon > node.getEpsilon()) {
+            node.setRight(delete(node.getRight(), epsilon));
         } else {
-            if (node.quadNodes.size() > 1) {
+            if (node.getQuadNodes().size() > 1) {
                 // If there are multiple QuadTreeNode references, just remove one
-                node.quadNodes.remove(0);
+                node.deleteLastQuadNode();;
             } else {
                 // If there is only one QuadTreeNode reference or none, perform deletion logic
-                if (node.left == null || node.right == null) {
-                    TwigAVLNode temp = (node.left != null) ? node.left : node.right;
+                if (node.getLeft() == null || node.getRight() == null) {
+                    TwigAVLNode temp = (node.getLeft() != null) ? node.getLeft() : node.getRight();
                     if (temp == null) {
                         temp = node;
                         node = null;
@@ -89,9 +89,9 @@ public class TwigAVLTree {
                         node = temp;
                     }
                 } else {
-                    TwigAVLNode temp = findMin(node.right);
-                    node.epsilon = temp.epsilon;
-                    node.right = delete(node.right, temp.epsilon);
+                    TwigAVLNode temp = findMin(node.getRight());
+                    node.setEpsilon(temp.getEpsilon());
+                    node.setRight(delete(node.getRight(), temp.getEpsilon()));
                 }
             }
         }
@@ -122,13 +122,13 @@ public class TwigAVLTree {
             return null;
         }
 
-        if (epsilon < node.epsilon) {
-            return getQuadTreeNodeByEpsilon(node.left, epsilon);
-        } else if (epsilon > node.epsilon) {
-            return getQuadTreeNodeByEpsilon(node.right, epsilon);
+        if (epsilon < node.getEpsilon()) {
+            return getQuadTreeNodeByEpsilon(node.getLeft(), epsilon);
+        } else if (epsilon > node.getEpsilon()) {
+            return getQuadTreeNodeByEpsilon(node.getRight(), epsilon);
         } else {
             // Return the first QuadTreeNode in the list (if any)
-            return (node.quadNodes.isEmpty()) ? null : node.quadNodes.get(0);
+            return (node.isQuadNodesEmpty()) ? null : node.getLastQuadNode();
         }
     }
 
@@ -145,8 +145,8 @@ public class TwigAVLTree {
             return null;
         }
 
-        while (node.left != null) {
-            node = node.left;
+        while (node.getLeft() != null) {
+            node = node.getLeft();
         }
         
         return node;
@@ -168,12 +168,12 @@ public class TwigAVLTree {
             return false;
         }
 
-        if (epsilon == node.epsilon) {
+        if (epsilon == node.getEpsilon()) {
             return true;
-        } else if (epsilon < node.epsilon) {
-            return search(node.left, epsilon);
+        } else if (epsilon < node.getEpsilon()) {
+            return search(node.getLeft(), epsilon);
         } else {
-            return search(node.right, epsilon);
+            return search(node.getRight(), epsilon);
         }
     }
 
@@ -185,7 +185,7 @@ public class TwigAVLTree {
      * 
      */
     private int height(TwigAVLNode node) {
-        return (node != null) ? node.height : 0;
+        return (node != null) ? node.getHeight() : 0;
     }
 
     /**
@@ -196,8 +196,8 @@ public class TwigAVLTree {
      */
     private void updateHeight(TwigAVLNode node) {
         if (node != null) {
-            node.height = 1 + Math.max(height(node.left), height(node.right));
-            node.bal = balanceFactor(node);
+            node.setHeight(1 + Math.max(height(node.getLeft()), height(node.getRight())));
+            node.setBal(balanceFactor(node));
         }
     }
 
@@ -209,7 +209,7 @@ public class TwigAVLTree {
      * 
      */
     private int balanceFactor(TwigAVLNode node) {
-        return (node != null) ? height(node.right) - height(node.left) : 0;
+        return (node != null) ? height(node.getRight()) - height(node.getLeft()) : 0;
     }
 
     /**
@@ -220,9 +220,9 @@ public class TwigAVLTree {
      * 
      */
     private TwigAVLNode rotateLeft(TwigAVLNode x) {
-        TwigAVLNode y = x.right;
-        x.right = y.left;
-        y.left = x;
+        TwigAVLNode y = x.getRight();
+        x.setRight(y.getLeft());
+        y.setLeft(x);
 
         updateHeight(x);
         updateHeight(y);
@@ -238,9 +238,9 @@ public class TwigAVLTree {
      * 
      */
     private TwigAVLNode rotateRight(TwigAVLNode y) {
-        TwigAVLNode x = y.left;
-        y.left = x.right;
-        x.right = y;
+        TwigAVLNode x = y.getLeft();
+        y.setLeft(x.getRight());
+        x.setRight(y);
 
         updateHeight(y);
         updateHeight(x);
@@ -256,7 +256,7 @@ public class TwigAVLTree {
      * 
      */
     private TwigAVLNode doubleRotateLeft(TwigAVLNode x) {
-        x.right = rotateRight(x.right);
+        x.setRight(rotateRight(x.getRight()));
         return rotateLeft(x);
     }
 
@@ -268,7 +268,7 @@ public class TwigAVLTree {
      * 
      */
     private TwigAVLNode doubleRotateRight(TwigAVLNode y) {
-        y.left = rotateLeft(y.left);
+        y.setLeft(rotateLeft(y.getLeft()));
         return rotateRight(y);
     }
 
@@ -283,13 +283,13 @@ public class TwigAVLTree {
         int bal = balanceFactor(node);
 
         if (bal > 1) {
-            if (balanceFactor(node.right) < 0) {
+            if (balanceFactor(node.getRight()) < 0) {
                 return doubleRotateLeft(node);
             } else {
                 return rotateLeft(node);
             }
         } else if (bal < -1) {
-            if (balanceFactor(node.left) > 0) {
+            if (balanceFactor(node.getLeft()) > 0) {
                 return doubleRotateRight(node);
             } else {
                 return rotateRight(node);

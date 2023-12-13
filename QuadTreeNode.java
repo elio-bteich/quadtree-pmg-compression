@@ -168,6 +168,7 @@ public class QuadTreeNode {
 
     /**
      * Print the values of the children of this node
+     * 
      */
     public void printChildren() {
         if (this.children != null) {

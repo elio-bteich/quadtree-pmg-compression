@@ -187,6 +187,7 @@ public class QuadTree {
         if (!node.isLeaf()) {
             if (node.isTwigRoot()) {
                 lambdaCompressTwig(node);
+                this.nbNodes -= 4;
             } else {
                 lambdaCompressTree(node.getChild(0));
                 lambdaCompressTree(node.getChild(1));
@@ -230,11 +231,11 @@ public class QuadTree {
         TwigAVLNode minTwig = this.twigs.findMin(twigs.getRoot());
         double ratio = 1.0;
         while (minTwig != null && ratio*100 > rho) {
-            lambdaCompressTwig(minTwig.quadNodes.get(0));
+            lambdaCompressTwig(minTwig.getLastQuadNode());
 
-            QuadTreeNode parentNode = minTwig.quadNodes.get(0).getParent();
+            QuadTreeNode parentNode = minTwig.getLastQuadNode().getParent();
 
-            this.twigs.delete(minTwig.epsilon);
+            this.twigs.delete(minTwig.getEpsilon());
             this.nbNodes -= 4;
 
             while (parentNode != null && parentNode.areChildrenEqual()) {
