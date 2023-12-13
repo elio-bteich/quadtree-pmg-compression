@@ -6,7 +6,6 @@ public class PMG {
      * Constructor for the QuadtreePrefab class.
      *
      * @param T      The array from which the Quadtree will be constructed.
-     * @param isGood True if all values were correctly read from the file, false otherwise.
      * @param maxL   The maximum luminosity value.
      */
     public PMG(int[][] T, int maxL) {

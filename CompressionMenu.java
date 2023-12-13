@@ -36,9 +36,16 @@ public class CompressionMenu {
      * Method to apply compression based on user input.
      */
     public void applyCompression() {
+        int initialNodesLow = newImage.getNbNodes();
+        long startTime ;
+        long endTime ;
+        double elapsedTimeInSeconds;
         if (chooseCompression()) {
             System.out.println("PROCESSING LAMBDA COMPRESSION: ");
+            startTime = System.currentTimeMillis();
             newImage.lambdaCompressTree();
+            endTime = System.currentTimeMillis();
+            elapsedTimeInSeconds = (endTime - startTime) / 1000.0;
             try {
                 FileManager.saveQuatree(( newImage.getImageName().substring(0,newImage.getImageName().length()- 3)) + "txt", newImage.toString());
             } catch (IOException e) {
@@ -48,7 +55,11 @@ public class CompressionMenu {
             newImage.toPgm("Lambda"+newImage.getImageName());
         } else {
             System.out.println("PROCESSING RHO COMPRESSION: ");
+            startTime = System.currentTimeMillis();
             newImage.rhoCompressTree(readRho());
+            endTime = System.currentTimeMillis();
+            elapsedTimeInSeconds = (endTime - startTime) / 1000.0;
+            
              try {
                 FileManager.saveQuatree(( newImage.getImageName().substring(0,newImage.getImageName().length()- 3)) + "txt", newImage.toString());
             } catch (IOException e) {
@@ -58,6 +69,11 @@ public class CompressionMenu {
             newImage.toPgm("RHO"+newImage.getImageName());
         }
         System.out.println("COMPRESSION COMPLETED!");
+        System.out.println("Le programme a mis " + elapsedTimeInSeconds + " secondes à s'exécuter.");
+        System.out.println("Custom Compression Result:");
+        System.out.println("Initial Nodes: " + initialNodesLow);
+        System.out.println("Final Nodes: " + newImage.getNbNodes());  
+        
     }
 
     /**
