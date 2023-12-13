@@ -28,7 +28,11 @@ public class DefaultMenu {
     public void start() {
         // Lambda compression
         System.out.println("PROCESSING LAMBDA COMPRESSION: ");
+        int initialNodesLow = newImageLambda.getNbNodes();
+        long startTime = System.currentTimeMillis();
         newImageLambda.lambdaCompressTree();
+        long endTime = System.currentTimeMillis();
+        double elapsedTimeInSeconds = (endTime - startTime) / 1000.0;
          try {
                FileManager.saveQuatree((("Lambda"+ newImageLambda.getImageName().substring(0,newImageLambda.getImageName().length()- 3))) + "txt", newImageLambda.toString());
             } catch (IOException e) {
@@ -36,12 +40,21 @@ public class DefaultMenu {
                 e.printStackTrace();
             }
             newImageLambda.toPgm("Lambda"+newImageLambda.getImageName());
-        System.out.println("COMPRESSION COMPLETED!");
+        System.out.println("LAMBDA COMPRESSION COMPLETED!");
+        System.out.println("Le programme a mis " + elapsedTimeInSeconds + " secondes à s'exécuter.");
+        System.out.println("Custom Compression Result:");
+        System.out.println("Initial Nodes: " + initialNodesLow);
+        System.out.println("Final Nodes: " + newImageLambda.getNbNodes());
+    
+        
 
         // RHO compression
         System.out.println("PROCESSING RHO COMPRESSION: ");
-        System.out.println(this.rho);
+        initialNodesLow = newImageRho.getNbNodes();
+        startTime = System.currentTimeMillis();
         newImageRho.rhoCompressTree(this.rho);
+        endTime = System.currentTimeMillis();
+        elapsedTimeInSeconds = (endTime - startTime) / 1000.0;
         try {
             FileManager.saveQuatree(( ("RHO"+newImageRho.getImageName().substring(0,newImageRho.getImageName().length()- 3))) + "txt", newImageRho.toString());
         } catch (IOException e) {
@@ -49,6 +62,10 @@ public class DefaultMenu {
             e.printStackTrace();
         }
         newImageRho.toPgm("RHO"+newImageRho.getImageName());
-        System.out.println("COMPRESSION COMPLETED!");
+        System.out.println("RHO COMPRESSION COMPLETED!");
+        System.out.println("Le programme a mis " + elapsedTimeInSeconds + " secondes à s'exécuter.");
+        System.out.println("Custom Compression Result:");
+        System.out.println("Initial Nodes: " + initialNodesLow);
+        System.out.println("Final Nodes: " + newImageRho.getNbNodes());        
     }
 }

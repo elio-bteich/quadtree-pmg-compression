@@ -19,8 +19,14 @@ public class CompressionMenu {
      * Method to start the compression menu.
      */
     public void start() {
-        displayCompMenu();
-        applyCompression();
+        boolean applyCompression = true;
+
+        while(applyCompression){
+            displayCompMenu();
+            applyCompression();
+            applyCompression = endCompression();
+        }
+        
     }
 
     /**
@@ -36,9 +42,16 @@ public class CompressionMenu {
      * Method to apply compression based on user input.
      */
     public void applyCompression() {
+        int initialNodesLow = newImage.getNbNodes();
+        long startTime ;
+        long endTime ;
+        double elapsedTimeInSeconds;
         if (chooseCompression()) {
             System.out.println("PROCESSING LAMBDA COMPRESSION: ");
+            startTime = System.currentTimeMillis();
             newImage.lambdaCompressTree();
+            endTime = System.currentTimeMillis();
+            elapsedTimeInSeconds = (endTime - startTime) / 1000.0;
             try {
                 FileManager.saveQuatree(( newImage.getImageName().substring(0,newImage.getImageName().length()- 3)) + "txt", newImage.toString());
             } catch (IOException e) {
@@ -48,7 +61,11 @@ public class CompressionMenu {
             newImage.toPgm("Lambda"+newImage.getImageName());
         } else {
             System.out.println("PROCESSING RHO COMPRESSION: ");
+            startTime = System.currentTimeMillis();
             newImage.rhoCompressTree(readRho());
+            endTime = System.currentTimeMillis();
+            elapsedTimeInSeconds = (endTime - startTime) / 1000.0;
+            
              try {
                 FileManager.saveQuatree(( newImage.getImageName().substring(0,newImage.getImageName().length()- 3)) + "txt", newImage.toString());
             } catch (IOException e) {
@@ -58,6 +75,11 @@ public class CompressionMenu {
             newImage.toPgm("RHO"+newImage.getImageName());
         }
         System.out.println("COMPRESSION COMPLETED!");
+        System.out.println("Le programme a mis " + elapsedTimeInSeconds + " secondes à s'exécuter.");
+        System.out.println("Custom Compression Result:");
+        System.out.println("Initial Nodes: " + initialNodesLow);
+        System.out.println("Final Nodes: " + newImage.getNbNodes());  
+        
     }
 
     /**
@@ -94,7 +116,27 @@ public class CompressionMenu {
             rho = scanner.nextInt();
             scanner.nextLine();
         }
-        scanner.close();
+        
         return rho;
+    }
+
+    public boolean endCompression(){
+       
+        
+        System.out.println("do you want to compress this image one more time (1 or 2):");
+        System.out.println("1. yes");
+        System.out.println("2. no");
+        Scanner scanner = new Scanner(System.in);
+        int answer = scanner.nextInt();
+        
+        
+
+        while (answer != 1 && answer != 2) {
+            System.out.println("ERROR: INVALID INPUT! Enter 1 OR 2: ");
+            answer = scanner.nextInt();
+            scanner.nextLine();
+        }
+        
+        return answer == 1;
     }
 }
